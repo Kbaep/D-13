@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Подписка
+{% endblock title %}
+
+{% block content %}
+{% if not is_subscriber %}
+    <h3> Вы подписались на категорию: {{ category }}</h3>
+{% else %}
+    <h3> Вы уже подписаны на категорию: {{ category }}</h3>
+{% endif %}
+
+{% endblock content %}

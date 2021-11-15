@@ -1,0 +1,48 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+    </form>
+
+    <h1>Найденные новости</h1>
+    {% if news %}
+    <p> Новостей найдено: {{ filter.qs | length }}</p>
+        {% for news_one in filter.qs %}
+            <h2>{{ news_.title | censor}}</h2>
+            <p>{{ news_.dateCreation | date:'d.m.Y'}}</p>
+            <p>{{ news_.text | censor | truncatechars:50}}</p>
+        {% endfor %}
+
+    {% else %}
+        <h2>Новости не найдены</h2>
+    {% endif %}
+
+    {% if is_paginated %}
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}"><</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a>{{ num }}</a>
+        {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+    {% endif %}
+
+{% endblock content %}
